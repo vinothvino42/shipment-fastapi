@@ -1,16 +1,17 @@
 import sqlite3
 from typing import Any
 
-from app.schemas import ShipmentCreate, ShipmentUpdate  # type: ignore
+from app.schemas import ShipmentCreate, ShipmentUpdate
 
 
 class Database:
-    def connect_to_db(self):
+    def __init__(self):
         # Make connection with database
         self.conn = sqlite3.connect("sqlite.db", check_same_thread=False)
         # Get cursor to execute queries and fetch data
         self.cur = self.conn.cursor()
-        print("connected to sqlite.db ...")
+        # Create table if it doesn't exist
+        self.create_table()
 
     def create_table(self):
         # Create a table with columns
@@ -30,7 +31,7 @@ class Database:
         self.cur.execute("SELECT MAX(id) FROM shipment")
         result = self.cur.fetchone()
 
-        new_id = result[0] + 1
+        new_id = result[0] + 1 if result[0] is not None else 12701
 
         # Insert values in the table
         self.cur.execute(
