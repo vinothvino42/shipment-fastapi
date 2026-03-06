@@ -1,0 +1,16 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "FastAPI: CLI dev",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/.venv/bin/fastapi",
+      "args": ["dev", "app/main.py"],
+      "env": {
+        "PYTHONPATH": "."
+      },
+      "console": "integratedTerminal"
+    }
+  ]
+}
