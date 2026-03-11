@@ -25,15 +25,18 @@ async def get_shipment(id: int, service: ServiceDep):
 ### Create a new shipment with content and weight
 @router.post("/")
 async def submit_shipment(
-    shipment: ShipmentCreate, service: ServiceDep
+    shipment: ShipmentCreate,
+    service: ServiceDep,
 ) -> ShipmentRead:
     return await service.add(shipment)
 
 
 ### Update fields of a shipment
-@router.patch("/shipment", response_model=ShipmentRead)
+@router.patch("/", response_model=ShipmentRead)
 async def update_shipment(
-    id: int, shipment_update: ShipmentUpdate, service: ServiceDep
+    id: int,
+    shipment_update: ShipmentUpdate,
+    service: ServiceDep,
 ):
     # Update data with given fields
     update = shipment_update.model_dump(exclude_none=True)
@@ -44,7 +47,7 @@ async def update_shipment(
             detail="No data provided to update",
         )
 
-    return await service.update(id, shipment_update)
+    return await service.update(id, update)
 
 
 ### Delete a shipment by id

@@ -4,8 +4,11 @@ from sqlmodel import SQLModel
 
 from app.config import settings
 
+# Create a database engine to connect with database
 engine = create_async_engine(
+    # database type/dialect and file name
     url=settings.POSTGRES_URL,
+    # Log sql queries
     echo=True,
 )
 

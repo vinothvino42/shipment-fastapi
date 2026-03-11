@@ -8,11 +8,14 @@ from app.database.models import Shipment, ShipmentStatus
 
 class ShipmentService:
     def __init__(self, session: AsyncSession):
+        # Get database session to perform database operations
         self.session = session
 
+    # Get a shipment by id
     async def get(self, id: int) -> Shipment:
         return await self.session.get(Shipment, id)
 
+    # Add a new shipment
     async def add(self, shipment_create: ShipmentCreate) -> Shipment:
         new_shipment = Shipment(
             **shipment_create.model_dump(),
@@ -26,7 +29,8 @@ class ShipmentService:
 
         return new_shipment
 
-    async def update(self, id: int, shipment_update: ShipmentUpdate) -> Shipment:
+    # Update an existing shipment
+    async def update(self, id: int, shipment_update: dict) -> Shipment:
         shipment = await self.get(id)
         shipment.sqlmodel_update(shipment_update)
 
@@ -36,6 +40,7 @@ class ShipmentService:
 
         return shipment
 
+    # Delete a shipment
     async def delete(self, id: int) -> None:
         await self.session.delete(await self.get(id))
         await self.session.commit()

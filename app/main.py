@@ -13,7 +13,10 @@ async def lifespan_handler(app: FastAPI):
     yield
 
 
-app = FastAPI(lifespan=lifespan_handler)
+app = FastAPI(
+    # Server start/stop listener
+    lifespan=lifespan_handler,
+)
 
 app.include_router(router)
 
