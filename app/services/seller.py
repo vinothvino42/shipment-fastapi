@@ -4,7 +4,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.api.schemas.seller import SellerCreate
 from app.database.models import Seller
 
-password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+password_context = CryptContext(
+    schemes=["sha256_crypt", "md5_crypt", "des_crypt"], deprecated="auto"
+)
 
 
 class SellerService:
