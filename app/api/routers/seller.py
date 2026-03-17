@@ -3,9 +3,10 @@ from fastapi.security import OAuth2PasswordRequestForm
 from typing_extensions import Annotated
 
 from app.core.security import oauth2_scheme
+from app.database.models import Seller
 from app.utils import decode_access_token
 
-from ..dependencies import SellerServiceDep
+from ..dependencies import SellerServiceDep, SessionDep
 from ..schemas.seller import SellerCreate, SellerRead
 
 router = APIRouter(prefix="/seller", tags=["Seller"])
@@ -29,7 +30,10 @@ async def login_seller(
 
 
 @router.get("/dashboard")
-async def dashboard(token: Annotated[str, Depends(oauth2_scheme)]):
+async def dashboard(
+    token: Annotated[str, Depends(oauth2_scheme)],
+    session: SessionDep,
+) -> Seller | None:
     data = decode_access_token(token)
 
     if data is None:
@@ -38,4 +42,6 @@ async def dashboard(token: Annotated[str, Depends(oauth2_scheme)]):
             detail="Invalid token",
         )
 
-    return {"detail": "Successfully Authenticated!"}
+    seller = await session.get(Seller, data["user"]["id"])
+
+    return seller
