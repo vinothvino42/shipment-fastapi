@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from uuid import UUID
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -12,7 +13,7 @@ class ShipmentService:
         self.session = session
 
     # Get a shipment by id
-    async def get(self, id: int) -> Shipment | None:
+    async def get(self, id: UUID) -> Shipment | None:
         return await self.session.get(Shipment, id)
 
     # Add a new shipment
@@ -31,7 +32,7 @@ class ShipmentService:
         return new_shipment
 
     # Update an existing shipment
-    async def update(self, id: int, shipment_update: dict) -> Shipment | None:
+    async def update(self, id: UUID, shipment_update: dict) -> Shipment | None:
         shipment = await self.get(id)
         if not shipment:
             return None
@@ -44,6 +45,6 @@ class ShipmentService:
         return shipment
 
     # Delete a shipment
-    async def delete(self, id: int) -> None:
+    async def delete(self, id: UUID) -> None:
         await self.session.delete(await self.get(id))
         await self.session.commit()
