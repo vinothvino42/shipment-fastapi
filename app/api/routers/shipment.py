@@ -54,6 +54,15 @@ async def update_shipment(
 ### Delete a shipment by id
 @router.delete("/")
 async def delete_shipment(id: int, service: ShipmentServiceDep) -> dict[str, str]:
+    # Check for shipment with given id
+    shipment = await service.get(id)
+
+    if shipment is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Given id doesn't exist!",
+        )
+
     # Remove from datastore
     await service.delete(id)
 
