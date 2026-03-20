@@ -29,7 +29,7 @@ async def submit_shipment(
     shipment: ShipmentCreate,
     service: ShipmentServiceDep,
 ) -> ShipmentRead:
-    return await service.add(shipment)
+    return await service.add(shipment, seller)
 
 
 ### Update fields of a shipment
